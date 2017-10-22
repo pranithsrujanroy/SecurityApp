@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    android:clickable="true"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Title of Complaint can be long enough"
+                android:maxLength="32"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oct 5th"
+                android:paddingTop="5dp"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="My gold ear ring is lost which has two hangings and two balls weighing 3 grams.If anyone finds please contact 8908583616."
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Status: "
+                android:fontFamily=""
+                />
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Processing"
+                android:layout_toRightOf="@+id/text"
+                />
+            <TextView
+                android:id="@+id/roll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="115cs0244"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
