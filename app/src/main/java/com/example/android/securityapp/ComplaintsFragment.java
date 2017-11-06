@@ -4,11 +4,14 @@ package com.example.android.securityapp;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,14 +41,18 @@ import java.util.ArrayList;
  */
 
 public class ComplaintsFragment extends Fragment {
-//    private String mJSONURLString = "http://localhost/ci_intro/api/getcomplaints";
-    boolean gotJson=false;
-    JSONObject json = new JSONObject();
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     public ComplaintsFragment(){
         //
     }
+    boolean gotJson=false;
+    JSONObject json = new JSONObject();
+    RecyclerView rv;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    CountDownTimer timer;
+    final ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+
+    private static final String ARG_SECTION_NUMBER = "section_number";
     public static ComplaintsFragment newInstance(int sectionNumber) {
         ComplaintsFragment fragment = new ComplaintsFragment();
         Bundle args = new Bundle();
@@ -53,19 +60,68 @@ public class ComplaintsFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View listv = inflater.inflate(R.layout.complaints_list,container,false);
-        RecyclerView rv = (RecyclerView) listv.findViewById(R.id.list);
+        rv = (RecyclerView) listv.findViewById(R.id.list);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        final ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+        json = getJSONFromInternet("http://localhost/website/api/getcomplaints");
 
-        json = getJSONFromInternet("http://localhost/ci_intro/api/getcomplaints");
+        timer=new CountDownTimer(4000,300){
+            Snackbar snack;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (gotJson) {
+                    initializeFeatured(json);
+                    initializeAdapter();
+                    mSwipeRefreshLayout.setRefreshing(false);
 
+                }
+            }
+            @Override
+            public void onFinish()
+            {
+                if(gotJson)
+                {
+                    initializeFeatured(json);
+                    initializeAdapter();
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                }
+                else
+                    snack=Snackbar.make(rv,"Cannot connect",Snackbar.LENGTH_INDEFINITE);
+                    snack.setAction("Refresh", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        refreshview();
+                    }
+                });
+                snack.show();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        timer.start();
+        mSwipeRefreshLayout = (SwipeRefreshLayout)listv.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                gotJson=false;
+                refreshview();
+            }
+        });
+
+        return listv;
+    }
+    public void initializeFeatured(JSONObject json){
         try {
             JSONArray response = json.getJSONArray("news");
 
@@ -91,14 +147,20 @@ public class ComplaintsFragment extends Fragment {
             // with the message from the exception.
             e.printStackTrace();
         }
-
-        RVAdapter adapter;
-        adapter = new RVAdapter(complaints,this.getContext());
-        rv.setAdapter(adapter);
-
-        return listv;
     }
 
+    public void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(complaints,this.getContext());
+        rv.setAdapter(adapter);
+        timer.cancel();
+    }
+
+    public void refreshview()
+    {
+        json=getJSONFromInternet("http://localhost/website/api/getcomplaints");
+        timer.cancel();
+        timer.start();
+    }
     public JSONObject getJSONFromInternet(String url)
     {
         JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,url,null,
@@ -124,5 +186,4 @@ public class ComplaintsFragment extends Fragment {
         Volley.newRequestQueue(getActivity()).add(jsonRequest.setShouldCache(false));
         return json;
     }
-
 }
