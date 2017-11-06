@@ -74,7 +74,8 @@ public class ComplaintsFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        json = getJSONFromInternet("http://localhost/website/api/getcomplaints");
+        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+
 
         timer=new CountDownTimer(4000,300){
             Snackbar snack;
@@ -157,7 +158,7 @@ public class ComplaintsFragment extends Fragment {
 
     public void refreshview()
     {
-        json=getJSONFromInternet("http://localhost/website/api/getcomplaints");
+        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
         timer.cancel();
         timer.start();
     }
