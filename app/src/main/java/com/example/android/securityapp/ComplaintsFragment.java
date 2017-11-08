@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class ComplaintsFragment extends Fragment {
 
     public ComplaintsFragment(){
-        //
+        //nothing
     }
     boolean gotJson=false;
     JSONObject json = new JSONObject();
