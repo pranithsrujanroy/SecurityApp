@@ -1,5 +1,6 @@
 package com.example.android.securityapp;
 
+//import com.example.android.securityapp.SaveSharedPreference;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -23,6 +24,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import static android.R.attr.id;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     /**
@@ -39,11 +42,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navbar);
+
+        TextView my = (TextView)findViewById(R.id.navhead);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.navhead);
+        username = getIntent().getStringExtra("username");
+        nav_user.setText(username);
+
     }
 
     @Override
@@ -150,5 +161,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+//    if(SaveSharedPreference.getUserName(MainActivity.this).length() == 0)
+//    {
+//        // call Login Activity
+//    }
+//else
+//    {
+//        // Stay at the current activity.
+//    }
 
 }
