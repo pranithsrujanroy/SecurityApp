@@ -6,11 +6,19 @@ package com.example.android.securityapp;
         import android.preference.PreferenceManager;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
+        import android.provider.ContactsContract;
+        import android.text.TextUtils;
         import android.util.Log;
+        import android.view.KeyEvent;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
+        import android.widget.Toast;
+        import java.util.ArrayList;
+        import java.util.List;
+
+        import static android.Manifest.permission.READ_CONTACTS;
         import android.widget.Toast;
 
         import com.android.volley.AuthFailureError;
@@ -22,9 +30,16 @@ package com.example.android.securityapp;
 
         import org.json.JSONException;
         import org.json.JSONObject;
+
+        import java.util.ArrayList;
         import java.util.HashMap;
+        import java.util.List;
         import java.util.Map;
-        import android.preference.PreferenceManager;
+        import java.util.prefs.Preferences;
+
+        import static android.Manifest.permission.READ_CONTACTS;
+        import static android.R.attr.password;
+        import static android.R.id.edit;
 /**
  * A login screen that offers login via email/password.
  */
@@ -45,7 +60,6 @@ public class LoginActivity extends AppCompatActivity  {
 
         username = (EditText)findViewById(R.id.etName);
         password = (EditText)findViewById(R.id.etPassword);
-
         Info = (TextView)findViewById(R.id.tvInfo);
         Login = (Button)findViewById(R.id.btnLogin);
 
@@ -140,8 +154,5 @@ public class LoginActivity extends AppCompatActivity  {
             };
 
             Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
-        }
     }
-
 }
-
