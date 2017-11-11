@@ -1,36 +1,20 @@
 package com.example.android.securityapp;
 
-        import android.animation.Animator;
-        import android.animation.AnimatorListenerAdapter;
-        import android.annotation.TargetApi;
+        import android.content.Context;
         import android.content.Intent;
-        import android.content.pm.PackageManager;
-        import android.support.annotation.NonNull;
-        import android.support.design.widget.Snackbar;
+        import android.content.SharedPreferences;
+        import android.preference.PreferenceManager;
         import android.support.v7.app.AppCompatActivity;
-        import android.app.LoaderManager.LoaderCallbacks;
-
-        import android.content.CursorLoader;
-        import android.content.Loader;
-        import android.database.Cursor;
-        import android.net.Uri;
-        import android.os.AsyncTask;
-
-        import android.os.Build;
         import android.os.Bundle;
         import android.provider.ContactsContract;
         import android.text.TextUtils;
         import android.util.Log;
         import android.view.KeyEvent;
         import android.view.View;
-        import android.view.View.OnClickListener;
-        import android.view.inputmethod.EditorInfo;
-        import android.widget.ArrayAdapter;
-        import android.widget.AutoCompleteTextView;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
-
+        import android.widget.Toast;
         import java.util.ArrayList;
         import java.util.List;
 
@@ -85,7 +69,6 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 senddata();
-
             }
         });
     }
@@ -95,7 +78,9 @@ public class LoginActivity extends AppCompatActivity  {
 
         _username = username.getText().toString();
         _password = password.getText().toString();
-
+       SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+      editor.putString("roll_no", _username);
         if (_username.isEmpty() || _password.isEmpty() ) {
             Toast.makeText(this, "Username and Password can't be blank!", Toast.LENGTH_SHORT).show();
             valid = false;
@@ -126,6 +111,7 @@ public class LoginActivity extends AppCompatActivity  {
                                     Log.d("check", "" + obj);
 
                                     JSONObject userDetail=obj.getJSONObject("userDetails");
+                                    String name = userDetail.getString("name");
 //                                    edit.putString(Preferences.USER_ID, userDetail.getString("user_id"));
 //                                    edit.putString(Preferences.USER_PROFILE_PIC, userDetail.getString("display_picture_small"));
 //                                    edit.putString(Preferences.DISPLAY_NAME, userDetail.getString("display_name"));
@@ -134,7 +120,9 @@ public class LoginActivity extends AppCompatActivity  {
 //                                    edit.putBoolean(Preferences.USER_LOGGED_IN, true);
 //                                    edit.apply();
                                     Toast.makeText(getApplicationContext(),"Signed In successfully!",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                    intent.putExtra("username",name);
+                                    startActivity(intent);
                                     finish();
                                 } else {
                                     String errorString=obj.getString("error");
@@ -166,7 +154,5 @@ public class LoginActivity extends AppCompatActivity  {
             };
 
             Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
-        }
     }
-
 }
