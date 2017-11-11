@@ -43,7 +43,7 @@ package com.example.android.securityapp;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
     private EditText password;
@@ -58,10 +58,10 @@ public class LoginActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
 
-        username = (EditText)findViewById(R.id.etName);
-        password = (EditText)findViewById(R.id.etPassword);
-        Info = (TextView)findViewById(R.id.tvInfo);
-        Login = (Button)findViewById(R.id.btnLogin);
+        username = (EditText) findViewById(R.id.etName);
+        password = (EditText) findViewById(R.id.etPassword);
+        Info = (TextView) findViewById(R.id.tvInfo);
+        Login = (Button) findViewById(R.id.btnLogin);
 
         //  Info.setText("No of attempts remaining: 5");
 
@@ -78,10 +78,10 @@ public class LoginActivity extends AppCompatActivity  {
 
         _username = username.getText().toString();
         _password = password.getText().toString();
-       SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
-      editor.putString("roll_no", _username);
-        if (_username.isEmpty() || _password.isEmpty() ) {
+        editor.putString("roll_no", _username);
+        if (_username.isEmpty() || _password.isEmpty()) {
             Toast.makeText(this, "Username and Password can't be blank!", Toast.LENGTH_SHORT).show();
             valid = false;
         } else {
@@ -105,12 +105,12 @@ public class LoginActivity extends AppCompatActivity  {
                                 Log.i("tins", response);
 
                                 JSONObject obj = new JSONObject(response);
-                                Boolean success=obj.getBoolean("success");
-                                Log.d("success",success+"");
+                                Boolean success = obj.getBoolean("success");
+                                Log.d("success", success + "");
                                 if (success) {
                                     Log.d("check", "" + obj);
 
-                                    JSONObject userDetail=obj.getJSONObject("userDetails");
+                                    JSONObject userDetail = obj.getJSONObject("userDetails");
                                     String name = userDetail.getString("name");
 //                                    edit.putString(Preferences.USER_ID, userDetail.getString("user_id"));
 //                                    edit.putString(Preferences.USER_PROFILE_PIC, userDetail.getString("display_picture_small"));
@@ -119,14 +119,14 @@ public class LoginActivity extends AppCompatActivity  {
 //                                    edit.putString(Preferences.USER_EMAIL, userDetail.getString("email"));
 //                                    edit.putBoolean(Preferences.USER_LOGGED_IN, true);
 //                                    edit.apply();
-                                    Toast.makeText(getApplicationContext(),"Signed In successfully!",Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                    intent.putExtra("username",name);
+                                    Toast.makeText(getApplicationContext(), "Signed In successfully!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("username", name);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    String errorString=obj.getString("error");
-                                    Toast.makeText(getApplicationContext(),errorString,Toast.LENGTH_LONG).show();
+                                    String errorString = obj.getString("error");
+                                    Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
                                 }
 
                             } catch (JSONException e) {
@@ -148,11 +148,12 @@ public class LoginActivity extends AppCompatActivity  {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("roll_no", _username);
                     params.put("password", _password);
-                    Log.d("code",params.get("roll_no"));
+                    Log.d("code", params.get("roll_no"));
                     return params;
                 }
             };
 
             Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
+        }
     }
 }
