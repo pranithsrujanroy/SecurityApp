@@ -3,9 +3,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_login"
-            android:title="Login" />
-        <item
             android:id="@+id/nav_my"
             android:title="My Complaints" />
         <item
@@ -18,9 +15,6 @@
             <item
                 android:id="@+id/nav_share"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:title="Send" />
         </menu>
     </item>
 

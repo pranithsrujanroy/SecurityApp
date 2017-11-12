@@ -7,4 +7,16 @@
     <string name="tab3">LA</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="comp_prompt">Choose Complaint Type</string>
+    <string name="status_prompt">Choose Complaint Type</string>
+    <string-array name="comp_type">
+        <item>Security</item>
+        <item>Hall</item>
+    </string-array>
+
+    <string-array name="status_type">
+        <item>Submitted</item>
+        <item>Processing</item>
+        <item>Done</item>
+    </string-array>
 </resources>
