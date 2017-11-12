@@ -80,13 +80,13 @@ public class NewComplaint extends AppCompatActivity {
 
                 cursor.close();
 
-                ImageView imgView = (ImageView) findViewById(R.id.imgView);
+               // ImageView imgView = (ImageView) findViewById(R.id.imgView);
 
                 // Set the Image in ImageView after decoding the String
 
-                imgView.setImageBitmap(BitmapFactory
-
-                        .decodeFile(imgDecodableString));
+//                imgView.setImageBitmap(BitmapFactory
+//
+//                        .decodeFile(imgDecodableString));
 
             } else {
 

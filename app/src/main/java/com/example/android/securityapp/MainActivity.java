@@ -2,6 +2,7 @@ package com.example.android.securityapp;
 
 //import com.example.android.securityapp.SaveSharedPreference;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -78,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar,  R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+      //  loadDrawableAsync(this, Icon.OnDrawableLoadedListener, Handler);
+        FloatingActionButton f = (FloatingActionButton) findViewById(R.id.fab);
+        f.setImageResource(R.drawable.fab);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
