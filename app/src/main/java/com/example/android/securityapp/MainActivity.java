@@ -117,18 +117,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-           if(position==0)
-                return ComplaintsFragment.newInstance(position+1);
-            else if(position==1)
-                return ComplaintsFragment.newInstance(position+1);
-            else
-                return ComplaintsFragment.newInstance(position+1);
+            switch (position) {
+                case 0:
+                    return ComplaintsFragment.newInstance(position);
+                case 1:
+                    return HallComplaintsFragment.newInstance(position);
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -138,8 +140,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return "Security";
                 case 1:
                     return "Hall";
-                case 2:
-                    return "LA";
             }
             return null;
         }
@@ -147,18 +147,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        if (item.isChecked()) item.setChecked(false);
+        else item.setChecked(true);
+
         int id = item.getItemId();
 
-         if (id == R.id.nav_login) {
-
-
-        } else if (id == R.id.nav_my) {
-
+         if (id == R.id.nav_my) {
+             Intent mycomplaints = new Intent(MainActivity.this, MyComplaints.class);
+             startActivity(mycomplaints);
+             return true;
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 

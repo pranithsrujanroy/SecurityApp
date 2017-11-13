@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         Info = (TextView) findViewById(R.id.tvInfo);
         Login = (Button) findViewById(R.id.btnLogin);
 
-        //  Info.setText("No of attempts remaining: 5");
-
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,13 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     JSONObject userDetail = obj.getJSONObject("userDetails");
                                     String name = userDetail.getString("name");
-//                                    edit.putString(Preferences.USER_ID, userDetail.getString("user_id"));
-//                                    edit.putString(Preferences.USER_PROFILE_PIC, userDetail.getString("display_picture_small"));
-//                                    edit.putString(Preferences.DISPLAY_NAME, userDetail.getString("display_name"));
-//                                    edit.putString(Preferences.USER_NAME, userDetail.getString("username"));
-//                                    edit.putString(Preferences.USER_EMAIL, userDetail.getString("email"));
-//                                    edit.putBoolean(Preferences.USER_LOGGED_IN, true);
-//                                    edit.apply();
+
                                     Toast.makeText(getApplicationContext(), "Signed In successfully!", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("username", name);

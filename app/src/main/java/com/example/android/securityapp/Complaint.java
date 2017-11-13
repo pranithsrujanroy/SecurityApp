@@ -10,13 +10,17 @@ public class Complaint {
     private String mStatus;
     private String mRoll;
     private String mDate;
+    private String mComplaintId;
+    private String mImage;
 
-    public Complaint(String title, String content, String status, String roll, String date){
+    public Complaint(String title, String content, String status, String roll, String date, String complaintId,String image){
         mTitle = title;
         mContent = content;
         mStatus = status;
         mRoll = roll;
         mDate = date;
+        mComplaintId = complaintId;
+        mImage = image;
     }
 
     public String getmContent() {
