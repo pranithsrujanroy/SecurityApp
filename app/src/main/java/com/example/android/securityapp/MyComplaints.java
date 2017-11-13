@@ -1,23 +1,14 @@
 package com.example.android.securityapp;
 
-
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.CountDownTimer;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,14 +23,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by ramana on 10/6/2017.
+ * Created by ramana on 11/11/2017.
  */
 
-public class ComplaintsFragment extends Fragment {
+public class MyComplaints extends AppCompatActivity{
 
-    public ComplaintsFragment(){
-        //nothing
-    }
     boolean gotJson=false;
     JSONObject json = new JSONObject();
     RecyclerView rv;
@@ -47,29 +35,18 @@ public class ComplaintsFragment extends Fragment {
     CountDownTimer timer;
     ArrayList<Complaint> complaints;
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-    public static ComplaintsFragment newInstance(int sectionNumber) {
-        ComplaintsFragment fragment = new ComplaintsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.complaints_list);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-    }
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View listv = inflater.inflate(R.layout.complaints_list,container,false);
-        rv = (RecyclerView) listv.findViewById(R.id.list);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        rv = (RecyclerView) findViewById(R.id.list);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getmycomplaints");
 
         timer=new CountDownTimer(4000,300){
             Snackbar snack;
@@ -95,17 +72,17 @@ public class ComplaintsFragment extends Fragment {
                 else
                     snack=Snackbar.make(rv,"Cannot connect",Snackbar.LENGTH_INDEFINITE);
                     snack.setAction("Refresh", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            refreshview();
-                        }
-                    });
+                    @Override
+                    public void onClick(View v) {
+                        refreshview();
+                    }
+                });
                 snack.show();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         };
         timer.start();
-        mSwipeRefreshLayout = (SwipeRefreshLayout)listv.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -114,12 +91,11 @@ public class ComplaintsFragment extends Fragment {
             }
         });
 
-        return listv;
     }
     public void initializeFeatured(JSONObject json){
         complaints = new ArrayList<Complaint>();
         try {
-            JSONArray response = json.getJSONArray("news");
+            JSONArray response = json.getJSONArray("my");
 
             for(int i=0;i<response.length();i++){
                 JSONObject currentC = response.getJSONObject(i);
@@ -145,17 +121,18 @@ public class ComplaintsFragment extends Fragment {
     }
 
     public void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(complaints,this.getContext());
+        RVAdapter adapter = new RVAdapter(complaints,MyComplaints.this);
         rv.setAdapter(adapter);
         timer.cancel();
     }
 
     public void refreshview()
     {
-        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getmycomplaints");
         timer.cancel();
         timer.start();
     }
+
     public JSONObject getJSONFromInternet(String url)
     {
         JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,url,null,
@@ -178,7 +155,8 @@ public class ComplaintsFragment extends Fragment {
                         error.printStackTrace();
                     }
                 });
-        Volley.newRequestQueue(getActivity()).add(jsonRequest.setShouldCache(false));
+        Volley.newRequestQueue(this).add(jsonRequest.setShouldCache(false));
         return json;
     }
 }
+

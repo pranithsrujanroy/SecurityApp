@@ -35,9 +35,9 @@ import java.util.ArrayList;
  * Created by ramana on 10/6/2017.
  */
 
-public class ComplaintsFragment extends Fragment {
+public class HallComplaintsFragment extends Fragment {
 
-    public ComplaintsFragment(){
+    public HallComplaintsFragment(){
         //nothing
     }
     boolean gotJson=false;
@@ -48,8 +48,8 @@ public class ComplaintsFragment extends Fragment {
     ArrayList<Complaint> complaints;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    public static ComplaintsFragment newInstance(int sectionNumber) {
-        ComplaintsFragment fragment = new ComplaintsFragment();
+    public static HallComplaintsFragment newInstance(int sectionNumber) {
+        HallComplaintsFragment fragment = new HallComplaintsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -69,7 +69,7 @@ public class ComplaintsFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/gethallcomplaints");
 
         timer=new CountDownTimer(4000,300){
             Snackbar snack;
@@ -94,12 +94,12 @@ public class ComplaintsFragment extends Fragment {
                 }
                 else
                     snack=Snackbar.make(rv,"Cannot connect",Snackbar.LENGTH_INDEFINITE);
-                    snack.setAction("Refresh", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            refreshview();
-                        }
-                    });
+                snack.setAction("Refresh", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        refreshview();
+                    }
+                });
                 snack.show();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -119,7 +119,7 @@ public class ComplaintsFragment extends Fragment {
     public void initializeFeatured(JSONObject json){
         complaints = new ArrayList<Complaint>();
         try {
-            JSONArray response = json.getJSONArray("news");
+            JSONArray response = json.getJSONArray("hall");
 
             for(int i=0;i<response.length();i++){
                 JSONObject currentC = response.getJSONObject(i);
@@ -152,7 +152,7 @@ public class ComplaintsFragment extends Fragment {
 
     public void refreshview()
     {
-        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/gethallcomplaints");
         timer.cancel();
         timer.start();
     }
