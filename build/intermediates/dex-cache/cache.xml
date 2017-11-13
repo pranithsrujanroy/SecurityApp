@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\ramana\AndroidStudioProjects\SecurityApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\RoyUday\AndroidStudioProjects\SecurityApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
-        <dex dex="C:\Users\ramana\AndroidStudioProjects\SecurityApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_5cd5b8df9b23e0307a0c92d4dcf14315e4971857\classes.dex" />
+        sha1="158fad74b4ed5bb6db10cd33e52f8efeadab2c7a">
+        <dex dex="C:\Users\RoyUday\AndroidStudioProjects\SecurityApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_a30d23503b383fa82ddb4e7cac35ee1e1b72fed1\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\ramana\AndroidStudioProjects\SecurityApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="C:\Users\RoyUday\AndroidStudioProjects\SecurityApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="9b2691d5239ab49961c8a9c9230d559ed82de9ca">
-        <dex dex="C:\Users\ramana\AndroidStudioProjects\SecurityApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_464ca51ff46cb57510804118f0e20cf54815a1f6\classes.dex" />
+        sha1="12920f9016b8b05acbc2af7cdc13cef6946fe7d3">
+        <dex dex="C:\Users\RoyUday\AndroidStudioProjects\SecurityApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_6f5759648aba73eb5fd3ce1a4c78cebaa972153b\classes.dex" />
     </item>
 
 </items>
