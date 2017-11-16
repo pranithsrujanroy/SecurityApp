@@ -2,6 +2,7 @@ package com.example.android.securityapp;
 
 //import com.example.android.securityapp.SaveSharedPreference;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import static android.R.attr.id;
+import static android.R.id.edit;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
+    SharedPreferences authentication;
+    SharedPreferences.Editor edit;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        authentication = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        edit = authentication.edit();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navbar);
 
@@ -167,6 +174,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_share) {
 
         }
+        else if(id==R.id.nav_logout){
+            edit.putString(Prefer.ROLL_NO, null);
+            Intent out=new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(out);
+            return true;
+         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
