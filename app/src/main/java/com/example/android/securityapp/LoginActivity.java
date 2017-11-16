@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Signed In successfully!", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("username", name);
+                                    intent.putExtra("roll_no",_username);
                                     startActivity(intent);
                                     finish();
                                 } else {
