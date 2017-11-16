@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/title_view"
@@ -88,6 +89,16 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/status_type"
                 android:prompt="@string/status_prompt" />
+
         </LinearLayout>
+        <Button
+            android:id="@+id/change"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:text="Change Status"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:background="#3F51B5"
+            android:layout_marginTop="14dp" />
     </LinearLayout>
 </ScrollView>

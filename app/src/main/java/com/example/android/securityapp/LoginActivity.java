@@ -1,24 +1,14 @@
 package com.example.android.securityapp;
 
-        import android.content.Context;
         import android.content.Intent;
         import android.content.SharedPreferences;
-        import android.preference.PreferenceManager;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
-        import android.provider.ContactsContract;
-        import android.text.TextUtils;
         import android.util.Log;
-        import android.view.KeyEvent;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
-        import android.widget.Toast;
-        import java.util.ArrayList;
-        import java.util.List;
-
-        import static android.Manifest.permission.READ_CONTACTS;
         import android.widget.Toast;
 
         import com.android.volley.AuthFailureError;
@@ -27,19 +17,12 @@ package com.example.android.securityapp;
         import com.android.volley.VolleyError;
         import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
-
+        import com.example.android.securityapp.Prefer;
         import org.json.JSONException;
         import org.json.JSONObject;
-
-        import java.util.ArrayList;
         import java.util.HashMap;
-        import java.util.List;
         import java.util.Map;
-        import java.util.prefs.Preferences;
 
-        import static android.Manifest.permission.READ_CONTACTS;
-        import static android.R.attr.password;
-        import static android.R.id.edit;
 /**
  * A login screen that offers login via email/password.
  */
@@ -49,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private TextView Info;
     private Button Login;
+    SharedPreferences authentication;
+    SharedPreferences.Editor edit;
     //private int counter = 5;
     String _username, _password;
     String loginurl = "https://ythanu999.000webhostapp.com/api/login";
@@ -58,17 +43,27 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
 
-        username = (EditText) findViewById(R.id.etName);
-        password = (EditText) findViewById(R.id.etPassword);
-        Info = (TextView) findViewById(R.id.tvInfo);
-        Login = (Button) findViewById(R.id.btnLogin);
+        authentication = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        edit = authentication.edit();
 
-        Login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                senddata();
-            }
-        });
+        if(authentication.getString(Prefer.ROLL_NO, null)!=null ){
+            Log.v("Logged", "In");
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }else {
+
+            username = (EditText) findViewById(R.id.etName);
+            password = (EditText) findViewById(R.id.etPassword);
+            Info = (TextView) findViewById(R.id.tvInfo);
+            Login = (Button) findViewById(R.id.btnLogin);
+
+            Login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    senddata();
+                }
+            });
+        }
     }
 
     public boolean validate() {
@@ -76,9 +71,9 @@ public class LoginActivity extends AppCompatActivity {
 
         _username = username.getText().toString();
         _password = password.getText().toString();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("roll_no", _username);
+//        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putString("roll_no", _username);
         if (_username.isEmpty() || _password.isEmpty()) {
             Toast.makeText(this, "Username and Password can't be blank!", Toast.LENGTH_SHORT).show();
             valid = false;
@@ -110,6 +105,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                     JSONObject userDetail = obj.getJSONObject("userDetails");
                                     String name = userDetail.getString("name");
+                                    edit.putString(Prefer.USER_ID, userDetail.getString("user_id"));
+                                    edit.putString(Prefer.ROLL_NO, userDetail.getString("roll_no"));
+                                    edit.putString(Prefer.DISPLAY_NAME, userDetail.getString("name"));
+                                    edit.putString(Prefer.USER_EMAIL, userDetail.getString("email"));
+                                    edit.putString(Prefer.USER_ROLE, userDetail.getString("user_role"));
+                                    edit.putBoolean(Prefer.USER_LOGGED_IN, true);
+                                    edit.apply();
 
                                     Toast.makeText(getApplicationContext(), "Signed In successfully!", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

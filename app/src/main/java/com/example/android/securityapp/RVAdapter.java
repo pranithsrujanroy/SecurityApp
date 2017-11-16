@@ -60,6 +60,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
             intent.putExtra("content",complaint.getmContent());
             intent.putExtra("status",complaint.getmStatus());
             intent.putExtra("roll",complaint.getmRoll());
+            intent.putExtra("id",complaint.getmComplaintId());
             //intent.putExtra("time",complaint.getmDate());
             this.context.startActivity(intent);
 

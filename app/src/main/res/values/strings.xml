@@ -16,7 +16,7 @@
 
     <string-array name="status_type">
         <item>Submitted</item>
-        <item>Processing</item>
-        <item>Done</item>
+        <item>Processing..</item>
+        <item>Done!</item>
     </string-array>
 </resources>

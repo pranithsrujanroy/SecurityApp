@@ -4,6 +4,7 @@ package com.example.android.securityapp;
  * Created by ramana on 10/8/2017.
  */
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,8 @@ public class NewComplaint extends AppCompatActivity {
     private Button SUBMIT;
     String _title, _description;
     String addcomplainturl = "https://ythanu999.000webhostapp.com/api/addnew";
-
+    String userId;
+    SharedPreferences.Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,9 @@ public class NewComplaint extends AppCompatActivity {
         description = (EditText) findViewById(R.id.editText2);
 //        Image = (Button) findViewById(R.id.buttonLoadPicture);
         SUBMIT = (Button) findViewById(R.id.button3);
+        SharedPreferences authentication = getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        edit = authentication.edit();
+        userId = authentication.getString(Prefer.USER_ID,"");
 
         SUBMIT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +70,6 @@ public class NewComplaint extends AppCompatActivity {
 
     public boolean validate() {
         boolean valid = true;
-
         _title = title.getText().toString();
         _description = description.getText().toString();
         if (_title.isEmpty() || _description.isEmpty()) {
@@ -124,6 +128,7 @@ public class NewComplaint extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("title", _title);
                     params.put("content", _description);
+                    params.put("roll_no", userId);
                     Log.d("code", params.get("title"));
                     return params;
                 }

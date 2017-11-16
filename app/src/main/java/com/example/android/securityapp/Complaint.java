@@ -42,4 +42,8 @@ public class Complaint {
     public String getmTitle() {
         return mTitle;
     }
+
+    public  String getmComplaintId(){
+        return mComplaintId;
+    }
 }

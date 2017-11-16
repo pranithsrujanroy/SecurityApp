@@ -1,5 +1,6 @@
 package com.example.android.securityapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -34,12 +35,16 @@ public class MyComplaints extends AppCompatActivity{
     SwipeRefreshLayout mSwipeRefreshLayout;
     CountDownTimer timer;
     ArrayList<Complaint> complaints;
-
+    SharedPreferences.Editor edit;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complaints_list);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+        SharedPreferences authentication = getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        edit = authentication.edit();
+        String userId = authentication.getString(Prefer.USER_ID,"");
 
         rv = (RecyclerView) findViewById(R.id.list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
