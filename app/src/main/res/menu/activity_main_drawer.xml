@@ -5,10 +5,17 @@
         <item
             android:id="@+id/nav_my"
             android:title="My Complaints" />
-        <item
-            android:id="@+id/nav_settings"
-            android:title="Settings" />
+
     </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_changepass"
+                android:title="Change Password" />
+        </menu>
+    </item>
+
 
     <item android:title="Communicate">
         <menu>
@@ -17,5 +24,9 @@
                 android:title="Share" />
         </menu>
     </item>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout" />
 
 </menu>
