@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -43,14 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    String username;
+    String username,roll_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navbar);
-
-        TextView my = (TextView)findViewById(R.id.navhead);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,8 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user = (TextView)hView.findViewById(R.id.navhead);
+        TextView nav_roll = (TextView)hView.findViewById(R.id.navroll);
         username = getIntent().getStringExtra("username");
+        roll_no = getIntent().getStringExtra("roll_no");
         nav_user.setText(username);
+        nav_roll.setText(roll_no);
 
     }
 
@@ -157,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              startActivity(mycomplaints);
              return true;
         } else if (id == R.id.nav_settings) {
+             Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
+             startActivity(settings);
+             return true;
 
         } else if (id == R.id.nav_share) {
 
