@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              Intent mycomplaints = new Intent(MainActivity.this, MyComplaints.class);
              startActivity(mycomplaints);
              return true;
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_changepass) {
              Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
              startActivity(settings);
              return true;
