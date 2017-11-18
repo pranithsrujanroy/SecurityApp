@@ -1,167 +1,130 @@
 package com.example.android.securityapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.securityapp.Prefer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by ramana on 11/11/2017.
+ * A login screen that offers login via email/password.
  */
+public class MyComplaints extends AppCompatActivity {
 
-public class MyComplaints extends AppCompatActivity{
-
-    boolean gotJson=false;
-    JSONObject json = new JSONObject();
-    RecyclerView rv;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    CountDownTimer timer;
-    ArrayList<Complaint> complaints;
+    private EditText username;
+    private EditText password;
+    private TextView Info;
+    private TextView Login;
+    SharedPreferences authentication;
     SharedPreferences.Editor edit;
+    //private int counter = 5;
+    String _userid;
+    String loginurl = "https://ythanu999.000webhostapp.com/api/getmycomplaints";
+    ArrayList<Complaint> complaints;
+    RecyclerView rv;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complaints_list);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
-        SharedPreferences authentication = getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
-        edit = authentication.edit();
-        String userId = authentication.getString(Prefer.USER_ID,"");
-
         rv = (RecyclerView) findViewById(R.id.list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getmycomplaints");
+        authentication = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        _userid=authentication.getString(Prefer.USER_ID,null);
+        edit = authentication.edit();
 
-        timer=new CountDownTimer(4000,300){
-            Snackbar snack;
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (gotJson) {
-                    initializeFeatured(json);
-                    initializeAdapter();
-                    mSwipeRefreshLayout.setRefreshing(false);
-
-                }
-            }
-            @Override
-            public void onFinish()
-            {
-                if(gotJson)
-                {
-                    initializeFeatured(json);
-                    initializeAdapter();
-                    mSwipeRefreshLayout.setRefreshing(false);
-
-                }
-                else
-                    snack=Snackbar.make(rv,"Cannot connect",Snackbar.LENGTH_INDEFINITE);
-                    snack.setAction("Refresh", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        refreshview();
-                    }
-                });
-                snack.show();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        };
-        timer.start();
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                gotJson=false;
-                refreshview();
-            }
-        });
-
-    }
-    public void initializeFeatured(JSONObject json){
-        complaints = new ArrayList<Complaint>();
-        try {
-            JSONArray response = json.getJSONArray("my");
-
-            for(int i=0;i<response.length();i++){
-                JSONObject currentC = response.getJSONObject(i);
-                String complaint_id = currentC.getString("complaint_id");
-                String title = currentC.getString("title");
-                String content = currentC.getString("content");
-                String date = currentC.getString("date");
-                String status = currentC.getString("status");
-                String complaint_by = currentC.getString("complaint_by");
-//                int complaint_type = currentC.getInt("complaint_type");
-                String image = currentC.getString("image");
-
-                Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,image);
-                complaints.add(comp);
-            }
-
-        } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
-            e.printStackTrace();
-        }
+        getcomplaints();
     }
 
-    public void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(complaints,MyComplaints.this);
-        rv.setAdapter(adapter);
-        timer.cancel();
-    }
+    private void getcomplaints() {
+        final String errorMsg;
 
-    public void refreshview()
-    {
-        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getmycomplaints");
-        timer.cancel();
-        timer.start();
-    }
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, loginurl,
+                    new Response.Listener<String>() {
 
-    public JSONObject getJSONFromInternet(String url)
-    {
-        JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,url,null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        json=response;
-                        gotJson=true;
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        try {
-                            json.put("success","false");
+                        @Override
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        public void onResponse(String response) {
+                            try {
+                                Log.i("tins", response);
+                                complaints = new ArrayList<Complaint>();
+                                JSONObject obj = new JSONObject(response);
+                                Boolean success = obj.getBoolean("success");
+                                Log.d("success", success + "");
+                                if (success) {
+                                    Log.d("check", "" + obj);
+                                    JSONArray responsee = obj.getJSONArray("my");
+                                    for(int i=0;i<responsee.length();i++){
+                                        JSONObject currentC = responsee.getJSONObject(i);
+                                        String complaint_id = currentC.getString("complaint_id");
+                                        String title = currentC.getString("title");
+                                        String content = currentC.getString("content");
+                                        String date = currentC.getString("date");
+                                        String status = currentC.getString("status");
+                                        String complaint_by = currentC.getString("complaint_by");
+                        //                int complaint_type = currentC.getInt("complaint_type");
+                                        String image = currentC.getString("image");
+
+                                        Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,image);
+                                        complaints.add(comp);
+                                        RVAdapter adapter = new RVAdapter(complaints,MyComplaints.this);
+                                        rv.setAdapter(adapter);
+                                    }
+                                } else {
+                                    String errorString = "loding error";
+                                    Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
                         }
-                        error.printStackTrace();
-                    }
-                });
-        Volley.newRequestQueue(this).add(jsonRequest.setShouldCache(false));
-        return json;
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(final VolleyError error) {
+                    Log.i("eeee", error.toString());
+                    Login.setEnabled(true);
+                }
+
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", _userid);
+                    Log.d("code", params.get("user_id"));
+                    return params;
+                }
+            };
+
+            Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
+
     }
 }
-
