@@ -1,6 +1,5 @@
 package com.example.android.securityapp;
 
-//import com.example.android.securityapp.SaveSharedPreference;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
@@ -18,54 +17,32 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import static android.R.attr.id;
-import static android.R.id.edit;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     SharedPreferences authentication;
     SharedPreferences.Editor edit;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
     String username,roll_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        authentication = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
-        edit = authentication.edit();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navbar);
 
+        authentication = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
+        edit = authentication.edit();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -87,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-      //  loadDrawableAsync(this, Icon.OnDrawableLoadedListener, Handler);
         FloatingActionButton f = (FloatingActionButton) findViewById(R.id.fab);
         f.setImageResource(R.drawable.fab);
 
@@ -96,8 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user = (TextView)hView.findViewById(R.id.navhead);
         TextView nav_roll = (TextView)hView.findViewById(R.id.navroll);
-        username = getIntent().getStringExtra("username");
-        roll_no = getIntent().getStringExtra("roll_no");
+
+        username=authentication.getString(Prefer.DISPLAY_NAME,null);
+        roll_no=authentication.getString(Prefer.ROLL_NO,null);
         nav_user.setText(username);
         nav_roll.setText(roll_no);
 
@@ -175,7 +152,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if(id==R.id.nav_logout){
-            edit.putString(Prefer.ROLL_NO, null);
+             edit.remove(Prefer.ROLL_NO);
+             edit.remove(Prefer.USER_ID);
+             edit.remove(Prefer.DISPLAY_NAME);
+             edit.remove(Prefer.USER_EMAIL);
+             edit.remove(Prefer.USER_ROLE);
+             edit.remove(Prefer.USER_LOGGED_IN);
+             edit.apply();
             Intent out=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(out);
             return true;
@@ -185,13 +168,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-//    if(SaveSharedPreference.getUserName(MainActivity.this).length() == 0)
-//    {
-//        // call Login Activity
-//    }
-//else
-//    {
-//        // Stay at the current activity.
-//    }
 
 }
