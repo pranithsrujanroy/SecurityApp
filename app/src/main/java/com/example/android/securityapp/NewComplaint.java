@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +44,11 @@ public class NewComplaint extends AppCompatActivity {
     private EditText description;
     private Button Image;
     private Button SUBMIT;
-    String _title, _description;
+    String _title, _description,_type;
     String addcomplainturl = "https://ythanu999.000webhostapp.com/api/addnew";
     String userId;
     SharedPreferences.Editor edit;
-
+    Spinner spinner1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,8 @@ public class NewComplaint extends AppCompatActivity {
         description = (EditText) findViewById(R.id.editText2);
 //        Image = (Button) findViewById(R.id.buttonLoadPicture);
         SUBMIT = (Button) findViewById(R.id.button3);
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+
         SharedPreferences authentication = getSharedPreferences(Prefer.AUTH_FILE, MODE_PRIVATE);
         edit = authentication.edit();
         userId = authentication.getString(Prefer.USER_ID,"");
@@ -86,6 +89,7 @@ public class NewComplaint extends AppCompatActivity {
         if (validate()) {
             _title = title.getText().toString();
             _description = description.getText().toString();
+            _type = String.valueOf(spinner1.getSelectedItem());
             StringRequest stringRequest = new StringRequest(Request.Method.POST, addcomplainturl,
                     new Response.Listener<String>() {
 
@@ -128,7 +132,8 @@ public class NewComplaint extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("title", _title);
                     params.put("content", _description);
-                    params.put("roll_no", userId);
+                    params.put("complaint_by", userId);
+                    params.put("complaint_type",_type);
                     Log.d("code", params.get("title"));
                     return params;
                 }

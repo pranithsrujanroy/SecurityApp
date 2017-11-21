@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,35 +26,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.android.securityapp.R.id.spinner1;
-
 /**
  * Created by ramana on 10/8/2017.
  */
 
 public class ComplaintActivity extends AppCompatActivity {
-    TextView Title,Content,Status,Time,Roll;
+    TextView Title,Content,Time,Roll;
     Spinner spinner1;
     Button change;
-    String _status,complaintId;
+    String _status,complaintId,Status,user_role;
     int statusval;
     String statusurl = "https://ythanu999.000webhostapp.com/api/changestatus";
+    SharedPreferences login;
+    SharedPreferences.Editor edit;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complaint_view);
+        login = getApplicationContext().getSharedPreferences(Prefer.AUTH_FILE,MODE_PRIVATE);
+        edit = login.edit();
+//        user_role = login.getString(Prefer.USER_ROLE,"");
 
         Title = (TextView) findViewById(R.id.title_view);
-        Status = (TextView) findViewById(R.id.status_view);
+//        Status = (TextView) findViewById(R.id.status_view);
         Content=(TextView) findViewById(R.id.content_view);
         Roll=(TextView) findViewById(R.id.roll_number_view);
         Title.setText(getIntent().getStringExtra("title"));
         Content.setText(getIntent().getStringExtra("content"));
         Roll.setText(getIntent().getStringExtra("roll"));
+        Status = getIntent().getStringExtra("status");
+        if(Status=="Processing.."){
+            statusval=1;
+        }else if(Status=="Done!"){
+            statusval=2;
+        }else statusval=0;
         complaintId = getIntent().getStringExtra("id");
 
         spinner1 = (Spinner) findViewById(R.id.spinner1);
-        SharedPreferences prefs = getPreferences(0);
-        spinner1.setSelection(prefs.getInt("spinnerSelection",0));
+//        SharedPreferences prefs = getPreferences(0);
+        spinner1.setSelection(statusval);
 
         addListenerOnButton();
     }
@@ -78,56 +86,58 @@ public class ComplaintActivity extends AppCompatActivity {
     private void changeStatus() {
             _status = String.valueOf(spinner1.getSelectedItem());
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, statusurl,
-                    new Response.Listener<String>() {
+            if(login.getString(Prefer.USER_ROLE,null)!=null) {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, statusurl,
+                        new Response.Listener<String>() {
 
-                        @Override
+                            @Override
 
-                        public void onResponse(String response) {
-                            try {
-                                Log.i("tins", response);
+                            public void onResponse(String response) {
+                                try {
+                                    Log.i("tins", response);
 
-                                JSONObject obj = new JSONObject(response);
-                                Boolean success = obj.getBoolean("success");
-                                Log.d("success", success + "");
-                                if (success) {
-                                    Log.d("check", "" + obj);
-                                    SharedPreferences.Editor editor = getPreferences(0).edit();
-                                    int selectedPosition = spinner1.getSelectedItemPosition();
-                                    editor.putInt("spinnerSelection", selectedPosition);
-                                    editor.apply();
-                                    Toast.makeText(getApplicationContext(), "Status Changed", Toast.LENGTH_LONG).show();
-                                    finish();
-                                } else {
-                                    String errorString = "error";
-                                    Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
+                                    JSONObject obj = new JSONObject(response);
+                                    Boolean success = obj.getBoolean("success");
+                                    Log.d("success", success + "");
+                                    if (success) {
+                                        Log.d("check", "" + obj);
+                                        Toast.makeText(getApplicationContext(), "Status Changed", Toast.LENGTH_LONG).show();
+                                        finish();
+                                    } else {
+                                        String errorString = "error";
+                                        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_LONG).show();
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
                             }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(final VolleyError error) {
+                        Log.i("eeee", error.toString());
+                        change.setEnabled(true);
+                    }
+
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("status", _status);
+                        params.put("complaint_id", complaintId);
+                        Log.d("code", params.get("status"));
+                        return params;
+                    }
+                };
+                Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
+            }else{
+                Toast.makeText(getApplicationContext(), "user_role NULL", Toast.LENGTH_LONG).show();
+
+            }
 
 
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(final VolleyError error) {
-                    Log.i("eeee", error.toString());
-                    change.setEnabled(true);
-                }
-
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("status", _status);
-                    params.put("complaint_id",complaintId);
-                    Log.d("code", params.get("status"));
-                    return params;
-                }
-            };
-
-            Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
     }
 
 }
