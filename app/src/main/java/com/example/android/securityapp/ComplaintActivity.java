@@ -48,23 +48,22 @@ public class ComplaintActivity extends AppCompatActivity {
 //        user_role = login.getString(Prefer.USER_ROLE,"");
 
         Title = (TextView) findViewById(R.id.title_view);
-//        Status = (TextView) findViewById(R.id.status_view);
         Content=(TextView) findViewById(R.id.content_view);
         Roll=(TextView) findViewById(R.id.roll_number_view);
         Title.setText(getIntent().getStringExtra("title"));
         Content.setText(getIntent().getStringExtra("content"));
         Roll.setText(getIntent().getStringExtra("roll"));
         Status = getIntent().getStringExtra("status");
-        if(Status=="Processing.."){
-            statusval=1;
-        }else if(Status=="Done!"){
-            statusval=2;
-        }else statusval=0;
+//        if(Status=="Processing.."){
+//            statusval=1;
+//        }else if(Status=="Done!"){
+//            statusval=2;
+//        }else statusval=0;
         complaintId = getIntent().getStringExtra("id");
-
+//
         spinner1 = (Spinner) findViewById(R.id.spinner1);
-//        SharedPreferences prefs = getPreferences(0);
-        spinner1.setSelection(statusval);
+////        SharedPreferences prefs = getPreferences(0);
+//        spinner1.setSelection(statusval);
 
         addListenerOnButton();
     }
@@ -133,7 +132,7 @@ public class ComplaintActivity extends AppCompatActivity {
                 };
                 Volley.newRequestQueue(this).add(stringRequest.setShouldCache(false));
             }else{
-                Toast.makeText(getApplicationContext(), "user_role NULL", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Only admin can change", Toast.LENGTH_LONG).show();
 
             }
 
