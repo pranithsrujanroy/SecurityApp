@@ -1,27 +1,28 @@
 package com.example.android.securityapp;
 
         import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.android.volley.AuthFailureError;
-        import com.android.volley.Request;
-        import com.android.volley.Response;
-        import com.android.volley.VolleyError;
-        import com.android.volley.toolbox.StringRequest;
-        import com.android.volley.toolbox.Volley;
-        import com.example.android.securityapp.Prefer;
-        import org.json.JSONException;
-        import org.json.JSONObject;
-        import java.util.HashMap;
-        import java.util.Map;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
@@ -110,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                     edit.putString(Prefer.DISPLAY_NAME, userDetail.getString("name"));
                                     edit.putString(Prefer.USER_EMAIL, userDetail.getString("email"));
                                     edit.putString(Prefer.USER_ROLE, userDetail.getString("user_role"));
+                                    edit.putString(Prefer.USER_HALL, userDetail.getString("hall"));
                                     edit.putBoolean(Prefer.USER_LOGGED_IN, true);
                                     edit.apply();
 

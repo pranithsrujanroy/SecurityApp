@@ -1,6 +1,5 @@
 package com.example.android.securityapp;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +20,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,7 +82,8 @@ public class ComplaintActivity extends AppCompatActivity {
     private void changeStatus() {
             _status = String.valueOf(spinner1.getSelectedItem());
 
-            if(login.getString(Prefer.USER_ROLE,null)!=null) {
+//        Log.v("tins", login.getString(Prefer.USER_ROLE,null));
+            if(login.getString(Prefer.USER_ROLE,"0").equals("1")) {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, statusurl,
                         new Response.Listener<String>() {
 

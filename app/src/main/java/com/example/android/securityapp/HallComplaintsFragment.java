@@ -1,20 +1,15 @@
 package com.example.android.securityapp;
 
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +25,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by ramana on 10/6/2017.
@@ -46,6 +45,9 @@ public class HallComplaintsFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     CountDownTimer timer;
     ArrayList<Complaint> complaints;
+    SharedPreferences login;
+    SharedPreferences.Editor edit;
+    String hall;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     public static HallComplaintsFragment newInstance(int sectionNumber) {
@@ -68,6 +70,10 @@ public class HallComplaintsFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        login = this.getActivity().getSharedPreferences(Prefer.AUTH_FILE,MODE_PRIVATE);
+        edit = login.edit();
+        hall=login.getString(Prefer.USER_HALL,null);
 
         json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/gethallcomplaints");
 
@@ -158,6 +164,11 @@ public class HallComplaintsFragment extends Fragment {
     }
     public JSONObject getJSONFromInternet(String url)
     {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("hall", hall);
+        JSONObject parameters = new JSONObject(params);
+
         JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET,url,null,
                 new Response.Listener<JSONObject>() {
                     @Override

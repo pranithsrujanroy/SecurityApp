@@ -2,24 +2,21 @@ package com.example.android.securityapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Icon;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -147,8 +144,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
              startActivity(settings);
              return true;
-
-        } else if (id == R.id.nav_share) {
 
         }
         else if(id==R.id.nav_logout){

@@ -13,4 +13,5 @@ public class Prefer {
     public static final String USER_EMAIL = "email";
     public static final String USER_ROLE = "user_role";
     public static final String USER_LOGGED_IN = "loggedIn";
+    public static final String USER_HALL = "hall";
 }
