@@ -7,17 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-//
-//
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+//
+//
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     ArrayList<Complaint> complaints = new ArrayList<Complaint>();
@@ -61,6 +56,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
             intent.putExtra("status",complaint.getmStatus());
             intent.putExtra("roll",complaint.getmRoll());
             intent.putExtra("id",complaint.getmComplaintId());
+            intent.putExtra("upvotes",complaint.getmCount());
             //intent.putExtra("time",complaint.getmDate());
             this.context.startActivity(intent);
 

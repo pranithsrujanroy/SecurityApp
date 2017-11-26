@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor edit;
     //private int counter = 5;
     String _username, _password;
-    String loginurl = "https://ythanu999.000webhostapp.com/api/login";
+    String loginurl = "https://sreekana123.000webhostapp.com/api/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

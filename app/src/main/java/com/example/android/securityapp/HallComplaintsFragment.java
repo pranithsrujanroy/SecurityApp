@@ -75,7 +75,7 @@ public class HallComplaintsFragment extends Fragment {
         edit = login.edit();
         hall=login.getString(Prefer.USER_HALL,null);
 
-        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/gethallcomplaints");
+        json = getJSONFromInternet("https://sreekana123.000webhostapp.com/api/gethallcomplaints");
 
         timer=new CountDownTimer(4000,300){
             Snackbar snack;
@@ -135,10 +135,11 @@ public class HallComplaintsFragment extends Fragment {
                 String date = currentC.getString("date");
                 String status = currentC.getString("status");
                 String complaint_by = currentC.getString("complaint_by");
+                int count = currentC.getInt("upvotes");
 //                int complaint_type = currentC.getInt("complaint_type");
                 String image = currentC.getString("image");
 
-                Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,image);
+                Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,count,image);
                 complaints.add(comp);
             }
 
@@ -158,7 +159,7 @@ public class HallComplaintsFragment extends Fragment {
 
     public void refreshview()
     {
-        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/gethallcomplaints");
+        json=getJSONFromInternet("https://sreekana123.000webhostapp.com/api/gethallcomplaints");
         timer.cancel();
         timer.start();
     }

@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     String _newpass, _repass;
     SharedPreferences authentication;
     SharedPreferences.Editor edit;
-    String url = "https://ythanu999.000webhostapp.com/api/changepass";
+    String url = "https://sreekana123.000webhostapp.com/api/changepass";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,14 +1,11 @@
 package com.example.android.securityapp;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +16,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.android.securityapp.Prefer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +38,7 @@ public class MyComplaints extends AppCompatActivity {
     SharedPreferences.Editor edit;
     //private int counter = 5;
     String _userid;
-    String loginurl = "https://ythanu999.000webhostapp.com/api/getmycomplaints";
+    String loginurl = "https://sreekana123.000webhostapp.com/api/getmycomplaints";
     ArrayList<Complaint> complaints;
     RecyclerView rv;
 
@@ -88,10 +84,11 @@ public class MyComplaints extends AppCompatActivity {
                                         String date = currentC.getString("date");
                                         String status = currentC.getString("status");
                                         String complaint_by = currentC.getString("complaint_by");
+                                        int count = currentC.getInt("upvotes");
                         //                int complaint_type = currentC.getInt("complaint_type");
                                         String image = currentC.getString("image");
 
-                                        Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,image);
+                                        Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,count,image);
                                         complaints.add(comp);
                                         RVAdapter adapter = new RVAdapter(complaints,MyComplaints.this);
                                         rv.setAdapter(adapter);

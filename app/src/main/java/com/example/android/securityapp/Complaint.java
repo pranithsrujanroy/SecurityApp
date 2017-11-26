@@ -11,15 +11,17 @@ public class Complaint {
     private String mRoll;
     private String mDate;
     private String mComplaintId;
+    private int mCount;
     private String mImage;
 
-    public Complaint(String title, String content, String status, String roll, String date, String complaintId,String image){
+    public Complaint(String title, String content, String status, String roll, String date, String complaintId,int count,String image){
         mTitle = title;
         mContent = content;
         mStatus = status;
         mRoll = roll;
         mDate = date;
         mComplaintId = complaintId;
+        mCount = count;
         mImage = image;
     }
 
@@ -45,5 +47,9 @@ public class Complaint {
 
     public  String getmComplaintId(){
         return mComplaintId;
+    }
+
+    public int getmCount(){
+        return mCount;
     }
 }

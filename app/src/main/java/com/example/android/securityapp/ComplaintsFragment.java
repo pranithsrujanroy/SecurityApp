@@ -1,20 +1,14 @@
 package com.example.android.securityapp;
 
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +63,7 @@ public class ComplaintsFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        json = getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json = getJSONFromInternet("https://sreekana123.000webhostapp.com/api/getsecuritycomplaints");
 
         timer=new CountDownTimer(4000,300){
             Snackbar snack;
@@ -129,10 +123,10 @@ public class ComplaintsFragment extends Fragment {
                 String date = currentC.getString("date");
                 String status = currentC.getString("status");
                 String complaint_by = currentC.getString("complaint_by");
-//                int complaint_type = currentC.getInt("complaint_type");
+                int count = currentC.getInt("upvotes");
                 String image = currentC.getString("image");
 
-                Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,image);
+                Complaint comp = new Complaint(title,content,status,complaint_by,date,complaint_id,count,image);
                 complaints.add(comp);
             }
 
@@ -152,7 +146,7 @@ public class ComplaintsFragment extends Fragment {
 
     public void refreshview()
     {
-        json=getJSONFromInternet("https://ythanu999.000webhostapp.com/api/getsecuritycomplaints");
+        json=getJSONFromInternet("https://sreekana123.000webhostapp.com/api/getsecuritycomplaints");
         timer.cancel();
         timer.start();
     }
